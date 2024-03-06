@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+byte tick = 1;
 
 void setup() {
     DDRB &= ~(1 << PB5); // Sätter pin 13 som input
@@ -8,6 +9,15 @@ void setup() {
 }
 
 void loop() {
-  
+    
+    PORTB |= (1 << PB4); // Toggle pin 12 (HIGH)
+    delay(100); //blink delay
+    PORTB &= ~(1 << PB4); // Toggle pin 12 (LOW)
+    delay(tick*1000);
+
+    tick++;
+    if(tick == 10)
+         tick = 1;
+
   
 }
