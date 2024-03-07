@@ -20,9 +20,8 @@ void setup() {
 void loop() {
     
     PORTB |= (1 << pin); // Toggle pin x (HIGH)
-    delay(100); //blink delay
     PORTB &= ~(1 << pin); // Toggle pin x (LOW)
-    delay(tick*1000);
+    
 
     pin++; // Ökar pin med 1
     tick++; // Ökar tick med 1
