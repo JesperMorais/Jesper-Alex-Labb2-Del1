@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
-byte tick = 1; // Sätter tick till 1
-byte pin = 1; // Sätter pin till 1
+
 
 void setup() {
     DDRD &= ~(1 << PD7); // Sätter pin 7 som input
@@ -18,18 +17,27 @@ void setup() {
 }
 
 void loop() {
+    if (PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt
+        PORTB |= (1 << PB1); // Sätt pin 9 till (HIGH)
+    } else {
+        PORTB &= ~(1 << PB1); // Sätt pin 9 till (LOW)
+    }
     
-    PORTB |= (1 << pin); // Toggle pin x (HIGH)
-    PORTB &= ~(1 << pin); // Toggle pin x (LOW)
+    if (PIND & (1 << PD6)) { // Om knapp 6 är nedtryckt
+        PORTB |= (1 << PB2); // Sätt pin 10 till (HIGH)
+    } else {
+        PORTB &= ~(1 << PB2); // Sätt pin 10 till (LOW)
+    }
     
-
-    pin++; // Ökar pin med 1
-    tick++; // Ökar tick med 1
-
-    if(tick > 9) // Om tick är större än 9
-         tick = 1; // Sätt tick till 1
-    if(pin > 4) // Om pin är större än 4
-        pin = 1; // Sätt pin till 1
-
-  
+    if (PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt
+        PORTB |= (1 << PB3); // Sätt pin 11 till (HIGH)
+    } else {
+        PORTB &= ~(1 << PB3); // Sätt pin 11 till (LOW)
+    }
+    
+    if (PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt
+        PORTB |= (1 << PB4); // Sätt pin 12 till (HIGH)
+    } else {
+        PORTB &= ~(1 << PB4); // Sätt pin 12 till (LOW)
+    }
 }
