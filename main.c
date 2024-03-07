@@ -4,7 +4,10 @@ byte tick = 1; // Sätter tick till 1
 byte pin = 1; // Sätter pin till 1
 
 void setup() {
+    DDRD &= ~(1 << PD7); // Sätter pin 7 som input
+    
     DDRB &= ~(1 << PB5); // Sätter pin 13 som input
+    
     DDRB |= (1 << PB4); // Sätter pin 12 som output
     DDRB |= (1 << PB3); // Sätter pin 11 som output
     DDRB |= (1 << PB2); // Sätter pin 10 som output
