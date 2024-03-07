@@ -5,6 +5,9 @@ byte pin = 1; // Sätter pin till 1
 
 void setup() {
     DDRD &= ~(1 << PD7); // Sätter pin 7 som input
+    DDRD &= ~(1 << PD6); // Sätter pin 6 som input
+    DDRD &= ~(1 << PD5); // Sätter pin 5 som input
+    DDRD &= ~(1 << PD4); // Sätter pin 4 som input
     
     DDRB &= ~(1 << PB5); // Sätter pin 13 som input
     
