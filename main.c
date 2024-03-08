@@ -16,6 +16,9 @@ void setup() {
     DDRB |= (1 << PB1); // Sätter pin 9 som output
 }
 
+bool hasBeenPressed[4] = {false, false, false, false}; // Initialize an array to track button presses on different pins
+
+
 void loop() {
     if (PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt
         PORTB |= (1 << PB1); // Sätt pin 9 till (HIGH)
