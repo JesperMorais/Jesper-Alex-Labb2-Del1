@@ -13,6 +13,14 @@ int isButtonPressed() {
     }
 }
 
+int countPresses() {
+    if (tick == 11) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void setup() {
     DDRD &= ~(1 << PD7); // Sätter pin 7 som input
     DDRD &= ~(1 << PD6); // Sätter pin 6 som input
