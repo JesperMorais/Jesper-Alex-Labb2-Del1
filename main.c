@@ -2,14 +2,14 @@
 
 int tick = 1;
 
-void turnOfRed(){
+void turnOfRed(){ //Funktion som släcker alla röda lampor / sätter dem till 0
   PORTB &= ~(1 << PB1);
   PORTB &= ~(1 << PB2);
   PORTB &= ~(1 << PB3);
   PORTB &= ~(1 << PB4);
 }
 
-int isButtonPressed() {
+int isButtonPressed() { //Retunerar 1 om 2 kanppar är nedtryckta samtidigt annars 0
     if ((PIND & (1 << PD7) && PIND & (1 << PD6)) ||
         (PIND & (1 << PD7) && PIND & (1 << PD5)) ||
         (PIND & (1 << PD7) && PIND & (1 << PD4)) ||
@@ -22,7 +22,7 @@ int isButtonPressed() {
     }
 }
 
-int countPresses() {
+int countPresses() { //retunerar 1 om knapparna tryckts 10 gånger annars 0
     if (tick == 11) {
         return 1;
     } else {
@@ -30,7 +30,7 @@ int countPresses() {
     }
 }
 
-void greenFunc(int buttonPresses, int buttonPressed) {
+void greenFunc(int buttonPresses, int buttonPressed) { //Funktion som sätter på den gröna lampan enligt specifikationerna
     if (buttonPresses == 1) {  
         PORTB |= (1 << PB0);
       turnOfRed();  
@@ -58,14 +58,16 @@ void setup() {
     DDRB |= (1 << PB2); // Sätter pin 10 som output
     DDRB |= (1 << PB1); // Sätter pin 9 som output
 
-    Serial.begin(9600);
+    Serial.begin(9600); 
 }
 
-bool hasBeenPressed[4] = {false, false, false, false}; // Initialize an array to track button presses on different pins
+bool hasBeenPressed[4] = {false, false, false, false}; //array med 4 bools som håller koll på om knapparna har tryckts
 
 
 void loop() {
-     if ((PIND & (1 << PD7)) && !hasBeenPressed[0]) {
+    //if sats som kollar om knapparna är nedtryckta och sätter på respektive lampa
+    //och ökar tick med 1 för varje knapptryckning
+     if ((PIND & (1 << PD7)) && !hasBeenPressed[0]) { 
         PORTB |= (1 << PB1);
         hasBeenPressed[0] = true;
         tick++;
@@ -100,10 +102,13 @@ void loop() {
         hasBeenPressed[3] = false;
         PORTB &= ~(1 << PB4);
     }
-  
+    
+    //printar tick för debugging
     Serial.print(tick);
     Serial.print("\n");
-
-    greenFunc(countPresses(), isButtonPressed());
-
+    
+    //kallar på greenFunc för att eventuellt sätta på den gröna lampan om det är dags
+    greenFunc(countPresses(), isButtonPressed()); /*countpresses är 1 om knapparna tryckts 10 gånger annars 0
+                                                    isButtonPressed är 1 om 2 knappar är nedtryckta samtidigt annars 0
+                                                */
 }
