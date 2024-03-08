@@ -22,7 +22,15 @@ int isButtonPressed() {
     }
 }
 
-void func(int buttonPresses, int buttonPressed) {
+int countPresses() {
+    if (tick == 11) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void greenFunc(int buttonPresses, int buttonPressed) {
     if (buttonPresses == 1) {  
         PORTB |= (1 << PB0);
       turnOfRed();  
@@ -36,13 +44,6 @@ void func(int buttonPresses, int buttonPressed) {
     }
 }
 
-int countPresses() {
-    if (tick == 11) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
 
 void setup() {
     DDRD &= ~(1 << PD7); // Sätter pin 7 som input
