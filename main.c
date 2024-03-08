@@ -31,16 +31,16 @@ int countPresses() { //retunerar 1 om knapparna tryckts 10 gånger annars 0
 }
 
 void greenFunc(int buttonPresses, int buttonPressed) { //Funktion som sätter på den gröna lampan enligt specifikationerna
-    if (buttonPresses) {  
-        PORTB |= (1 << PB0);
-      turnOfRed();  
+    if (buttonPresses) {  //Om knapparna tryckts 10 gånger
+        PORTB |= (1 << PB0); //Sätter på den gröna lampan
+      turnOfRed();  //stänger av alla röda lampor
       delay(3000);
         tick = 1;
         PORTB &= ~(1 << PB0); 
-    } else if (buttonPressed) {
-        PORTB |= (1 << PB0);
+    } else if (buttonPressed) { //Om 2 knappar är nedtryckta samtidigt
+        PORTB |= (1 << PB0); //Sätter på den gröna lampan
     } else {
-        PORTB &= ~(1 << PB0); 
+        PORTB &= ~(1 << PB0); //Stänger av den gröna lampan
     }
 }
 
