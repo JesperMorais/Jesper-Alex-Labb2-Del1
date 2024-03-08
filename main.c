@@ -1,9 +1,9 @@
-#include <Arduino.h>
+#include <Arduino.h> //endast för att kunna använda Serial.print för debugging
 
 int tick = 1; //variable som håller koll på antalet knapptryckningar
 
 void turnOfRed(){ //Funktion som släcker alla röda lampor / sätter dem till 0
-  PORTB &= ~(1 << PB1);
+  PORTB &= ~(1 << PB1); 
   PORTB &= ~(1 << PB2);
   PORTB &= ~(1 << PB3);
   PORTB &= ~(1 << PB4);
