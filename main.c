@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-int tick = 1;
+int tick = 1; //variable som håller koll på antalet knapptryckningar
 
 void turnOfRed(){ //Funktion som släcker alla röda lampor / sätter dem till 0
   PORTB &= ~(1 << PB1);
