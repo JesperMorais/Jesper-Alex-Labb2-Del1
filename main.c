@@ -22,6 +22,20 @@ int isButtonPressed() {
     }
 }
 
+void func(int buttonPresses, int buttonPressed) {
+    if (buttonPresses == 1) {  
+        PORTB |= (1 << PB0);
+      turnOfRed();  
+      delay(3000);
+        tick = 1;
+        PORTB &= ~(1 << PB0); 
+    } else if (buttonPressed == 1) {
+        PORTB |= (1 << PB0);
+    } else {
+        PORTB &= ~(1 << PB0); 
+    }
+}
+
 int countPresses() {
     if (tick == 11) {
         return 1;
