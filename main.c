@@ -1,6 +1,17 @@
 #include <Arduino.h>
 
-
+int isButtonPressed() {
+    if ((PIND & (1 << PD7) && PIND & (1 << PD6)) ||
+        (PIND & (1 << PD7) && PIND & (1 << PD5)) ||
+        (PIND & (1 << PD7) && PIND & (1 << PD4)) ||
+        (PIND & (1 << PD6) && PIND & (1 << PD5)) ||
+        (PIND & (1 << PD6) && PIND & (1 << PD4)) ||
+        (PIND & (1 << PD5) && PIND & (1 << PD4))) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 void setup() {
     DDRD &= ~(1 << PD7); // Sätter pin 7 som input
