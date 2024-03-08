@@ -14,33 +14,51 @@ void setup() {
     DDRB |= (1 << PB3); // Sätter pin 11 som output
     DDRB |= (1 << PB2); // Sätter pin 10 som output
     DDRB |= (1 << PB1); // Sätter pin 9 som output
+
+    Serial.begin(9600);
 }
 
 bool hasBeenPressed[4] = {false, false, false, false}; // Initialize an array to track button presses on different pins
 
 
 void loop() {
-    if (PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt
-        PORTB |= (1 << PB1); // Sätt pin 9 till (HIGH)
-    } else {
-        PORTB &= ~(1 << PB1); // Sätt pin 9 till (LOW)
+     if ((PIND & (1 << PD7)) && !hasBeenPressed[0]) {
+        PORTB |= (1 << PB1);
+        hasBeenPressed[0] = true;
+        tick++;
+    } else if (!(PIND & (1 << PD7)) && hasBeenPressed[0]) {
+        hasBeenPressed[0] = false;
+     	PORTB&= ~(1 << PB1);
     }
-    
-    if (PIND & (1 << PD6)) { // Om knapp 6 är nedtryckt
-        PORTB |= (1 << PB2); // Sätt pin 10 till (HIGH)
-    } else {
-        PORTB &= ~(1 << PB2); // Sätt pin 10 till (LOW)
+  
+    if ((PIND & (1 << PD6)) && !hasBeenPressed[1]) {
+        PORTB |= (1 << PB2);
+        hasBeenPressed[1] = true;
+        tick++;
+    } else if (!(PIND & (1 << PD6)) && hasBeenPressed[1]) {
+        hasBeenPressed[1] = false;
+      	PORTB &= ~(1 << PB2);
+    }  
+  
+    if ((PIND & (1 << PD5)) && !hasBeenPressed[2]) {
+        PORTB |= (1 << PB3);
+        hasBeenPressed[2] = true;
+        tick++;
+    } else if (!(PIND & (1 << PD5)) && hasBeenPressed[2]) {
+        hasBeenPressed[2] = false;
+        PORTB &= ~(1 << PB3);
     }
-    
-    if (PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt
-        PORTB |= (1 << PB3); // Sätt pin 11 till (HIGH)
-    } else {
-        PORTB &= ~(1 << PB3); // Sätt pin 11 till (LOW)
+  
+    if ((PIND & (1 << PD4)) && !hasBeenPressed[3]) {
+        PORTB |= (1 << PB4);
+        hasBeenPressed[3] = true;
+        tick++;
+    } else if (!(PIND & (1 << PD4)) && hasBeenPressed[3]) {
+        hasBeenPressed[3] = false;
+        PORTB &= ~(1 << PB4);
     }
-    
-    if (PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt
-        PORTB |= (1 << PB4); // Sätt pin 12 till (HIGH)
-    } else {
-        PORTB &= ~(1 << PB4); // Sätt pin 12 till (LOW)
-    }
+  
+    Serial.print(tick);
+    Serial.print("\n");
+
 }
