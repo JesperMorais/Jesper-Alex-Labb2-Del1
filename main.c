@@ -1,5 +1,14 @@
 #include <Arduino.h>
 
+int tick = 1;
+
+void turnOfRed(){
+  PORTB &= ~(1 << PB1);
+  PORTB &= ~(1 << PB2);
+  PORTB &= ~(1 << PB3);
+  PORTB &= ~(1 << PB4);
+}
+
 int isButtonPressed() {
     if ((PIND & (1 << PD7) && PIND & (1 << PD6)) ||
         (PIND & (1 << PD7) && PIND & (1 << PD5)) ||
