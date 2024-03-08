@@ -104,4 +104,6 @@ void loop() {
     Serial.print(tick);
     Serial.print("\n");
 
+    greenFunc(countPresses(), isButtonPressed());
+
 }
