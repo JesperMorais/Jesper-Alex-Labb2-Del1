@@ -20,6 +20,7 @@ void setup() {
     DDRD &= ~(1 << PD4); // Sätter pin 4 som input  
 }
 
+
 int anyLedsOn(){
   if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
     return 1;
@@ -58,16 +59,16 @@ void loop() {
   static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
   static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
 
-    if(PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt
-        controllLed(&_PB1);
+    if(PIND & (1 << PD7) || PORTB |= (1 << PB1)) { // Om knapp 7 är nedtryckt eller lampan är tänd
+        controllLed(&_PB1); 
     }
-    if(PIND & (1 << PD6)) { // Om knapp 6 är nedtryckt
+    if(PIND & (1 << PD6) || PORTB |= (1 << PB2)) { // om knapp 6 är nedtryckt eller lampan är tänd
         controllLed(&_PB2);
     }
-    if(PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt
+    if(PIND & (1 << PD5) || PORTB |= (1 << PB3)) { // Om knapp 5 är nedtryckt eller lampan är tänd 
         controllLed(&_PB3);
     }
-    if(PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt
+    if(PIND & (1 << PD4) || PORTB |= (1 << PB4)) { // Om knapp 4 är nedtryckt eller lampan är tänd
         controllLed(&_PB4);
     }
 }
