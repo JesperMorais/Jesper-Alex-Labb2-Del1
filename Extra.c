@@ -53,7 +53,7 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-  static Led _PB1 = {1, 500,{1000, 2000}, 0, false, 0, 0};
+  static Led _PB1 = {1, 500,{1000, 2000}, 0, false, 0,0};
   static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
   static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
   static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
