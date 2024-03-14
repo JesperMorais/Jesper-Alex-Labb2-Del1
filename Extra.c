@@ -11,9 +11,13 @@ typedef struct Led {
 } Led;
 
 void setup() {
-  DDRB &= ~(1 << PB5); 
-  DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4); 
+    DDRB &= ~(1 << PB5); 
+    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4); 
 
+    DDRD &= ~(1 << PD7); // Sätter pin 7 som input
+    DDRD &= ~(1 << PD6); // Sätter pin 6 som input
+    DDRD &= ~(1 << PD5); // Sätter pin 5 som input
+    DDRD &= ~(1 << PD4); // Sätter pin 4 som input  
 }
 
 int anyLedsOn(){
@@ -54,9 +58,16 @@ void loop() {
   static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
   static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
 
-
-  controllLed(&_PB1);
-  controllLed(&_PB2);
-  controllLed(&_PB3);
-  controllLed(&_PB4);
+    if(PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt
+        controllLed(&_PB1);
+    }
+    if(PIND & (1 << PD6)) { // Om knapp 6 är nedtryckt
+        controllLed(&_PB2);
+    }
+    if(PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt
+        controllLed(&_PB3);
+    }
+    if(PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt
+        controllLed(&_PB4);
+    }
 }
