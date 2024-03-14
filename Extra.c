@@ -42,7 +42,7 @@ void controllLed(Led *led) {
       }
   } 
     if(!led->isOn){ //lampan är inte på
-      if(millis() - led->ledOfftimer >= led->offTimerArray[led->currentIndex] && !anyLedsOn()){ //lampan har varit avstängd i tillräckligt lång tid
+      if(millis() - led->ledOfftimer >= led->offTimerArray[led->currentIndex] && !anyLedsOn()){ //lampan har varit avstängd i tillräckligt lång tid och ingen annan lampa är tänd
         turnOnLamp(led); //tänder lampan
         led->currentIndex++; //ökar indexet i offTimerArray
         if(led->currentIndex > 1){ //om indexet är större än 1
