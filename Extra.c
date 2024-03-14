@@ -1,10 +1,13 @@
 #include <Arduino.h>
 
+#include <stdbool.h>
+#include <stdint.h>
+
 typedef struct Led {
-  byte pin; //säger vilken pinne lampan är kopplad till
+  uint8_t pin; //säger vilken pinne lampan är kopplad till
   unsigned int blink; //säger hur länge lampan lyser
   int offTimerArray[2]; //array av ints som säger hur länge lampan skall vara avstängs
-  int currentIndex ; //säger vilket index i offTimerArray som vi är på just nu
+  uint8_t currentIndex ; //säger vilket index i offTimerArray som vi är på just nu
   bool isOn; //säger om lampan är tänd eller släckt
   unsigned long ledOfftimer; //säger när lampan släcktes
   unsigned long blinkTimer; //säger när lampan började blinka
@@ -12,12 +15,12 @@ typedef struct Led {
 
 void setup() {
     DDRB &= ~(1 << PB5); 
-    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4); 
+    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4);  // Sätter pin 1, 2, 3 och 4 som Digital output
 
-    DDRD &= ~(1 << PD7); // Sätter pin 7 som input
-    DDRD &= ~(1 << PD6); // Sätter pin 6 som input
-    DDRD &= ~(1 << PD5); // Sätter pin 5 som input
-    DDRD &= ~(1 << PD4); // Sätter pin 4 som input  
+    DDRD &= ~(1 << PD7); // Sätter pin 7 som Digital input 
+    DDRD &= ~(1 << PD6); // Sätter pin 6 som Digital input
+    DDRD &= ~(1 << PD5); // Sätter pin 5 som Digital input
+    DDRD &= ~(1 << PD4); // Sätter pin 4 som Digital input  
 }
 
 
@@ -36,17 +39,20 @@ void turnOnLamp(Led *led){ //tänder lampan samt sätter uppdaterar previousMill
 
 void controllLed(Led *led) {
     if(led->isOn){
-      if(millis() - led->blinkTimer >= led->blink){ //om tiden som gått sedan lampan började blinka är större än blinktiden
+      
+      if(millis() - led->blinkTimer >= led->blink){ //om tiden som gått sedan lampan började blinka är större än blinktiden        
         PORTB &= ~(1 << led->pin); //stänger av leden
         led->isOn = false; //sätter isOn till false
         led->ledOfftimer = millis(); //sätter ledOfftimer till millis
       }
   } 
     if(!led->isOn){ //lampan är inte på
+      
       if(millis() - led->ledOfftimer >= led->offTimerArray[led->currentIndex] && !anyLedsOn()){ //lampan har varit avstängd i tillräckligt lång tid och ingen annan lampa är tänd
-        turnOnLamp(led); //tänder lampan
+        turnOnLamp(led); //tänder lampan       
         led->currentIndex++; //ökar indexet i offTimerArray
-        if(led->currentIndex > 1){ //om indexet är större än 1
+        
+        if(led->currentIndex > 1){ //om indexet är större än 1, detta för att vi har 2 värden i offTimerArray
           led->currentIndex = 0; //sätt indexet till 0
       } 
     }
@@ -71,4 +77,5 @@ void loop() {
     if(PIND & (1 << PD4) || PORTB |= (1 << PB4)) { // Om knapp 4 är nedtryckt eller lampan är tänd
         controllLed(&_PB4);
     }
+
 }
