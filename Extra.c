@@ -16,10 +16,10 @@ typedef struct Led {
 } Led;
 
 void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för att den görna lede ska kunna overrida de röda
-  PORTB &= ~(1 << PB1); 
-  PORTB &= ~(1 << PB2);
-  PORTB &= ~(1 << PB3);
-  PORTB &= ~(1 << PB4);
+    PORTB &= ~(1 << PB1); 
+    PORTB &= ~(1 << PB2);
+    PORTB &= ~(1 << PB3);
+    PORTB &= ~(1 << PB4);
 }
 
 int isButtonPressed() { //Retunerar 1 om 2 kanppar är nedtryckta samtidigt annars 0
@@ -54,9 +54,9 @@ int anyLedsOn(){
 
 //funktion som tänder lampan samt sätter uppdaterar relevant variabler
 void turnOnLamp(Led *led){
-  PORTB |= (1 << led->pin);
-  led->isOn = true;
-  led->blinkTimer = millis();
+    PORTB |= (1 << led->pin);
+    led->isOn = true;
+    led->blinkTimer = millis();
 }
 
 //funktion som kontrollerar om lampan skall tändas eller släckas
@@ -83,10 +83,12 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-  static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
-  static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
-  static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
-  static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
+    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
+    static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
+    static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
+    static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
+
+    
 
     if(PIND & (1 << PD7) || PORTB |= (1 << PB1)) { // Om knapp 7 är nedtryckt eller lampan är tänd
         controllLed(&_PB1); 
