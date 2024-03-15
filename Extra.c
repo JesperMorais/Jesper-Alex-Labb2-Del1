@@ -16,8 +16,8 @@ typedef struct Led {
 
 void setup() {
     DDRB &= ~(1 << PB5); 
-    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4);  // Sätter pin 1, 2, 3 och 4 som Digital output
-
+    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PD0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
+    
     DDRD &= ~(1 << PD7); // Sätter pin 7 som Digital input 
     DDRD &= ~(1 << PD6); // Sätter pin 6 som Digital input
     DDRD &= ~(1 << PD5); // Sätter pin 5 som Digital input
