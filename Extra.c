@@ -137,6 +137,8 @@ void loop() {
         controllLed(&_PB4);
     }
 
+    //TODO: fixa så det är 100% säkert att knapparna inte trycks för snabbt
+
     delay(100); //väntar 100 ms för att inte överbelasta knapptrycken
 
     if(isButtonPressed() || countPresses()) { //Om 2 knappar är nedtryckta samtidigt så 
