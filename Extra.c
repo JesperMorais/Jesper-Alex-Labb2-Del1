@@ -1,5 +1,4 @@
-#include <Arduino.h>
-
+#include <Arduino.h> //endast för att kunna använda Serial.print för debugging
 #include <stdbool.h>
 #include <stdint.h>
 int tick = 1; //variable som håller koll på antalet knapptryckningar
@@ -109,31 +108,36 @@ void loop() {
     //Updelningen av if satserna sker för att vi skall kontrollera tick och knapptryckningar
     if(PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt 
         tick++;
+        
         controllLed(&_PB1); //kollar om lampan på pin 9 skall tändas eller släckas
-    }if else(PORTB |= (1 << PB1)){//om lampan är tänd
+
+    }else if(PINB & (1 << PB1)){//om lampan är tänd
         controllLed(&_PB1);
     }
 
     if(PIND & (1 << PD6)) { // om knapp 6 är nedtryckt
         tick++;
         controllLed(&_PB2); //kollar om lampan på pin 10 skall tändas eller släckas
-    }if else(PORTB |= (1 << PB2)){//om lampan är tänd
+
+    }else if(PINB & (1 << PB2)){//om lampan är tänd
         controllLed(&_PB2);
     }
 
     if(PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt 
         tick++;
         controllLed(&_PB3); //kollar om lampan på pin 11 skall tändas eller släckas
-    }if else(PORTB |= (1 << PB3)){//om lampan är tänd
+    }else if(PINB & (1 << PB3)){//om lampan är tänd
         controllLed(&_PB3);
     }
 
     if(PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt 
         tick++;
         controllLed(&_PB4); //kollar om lampan på pin 12 skall tändas eller släckas
-    }if else(PORTB |= (1 << PB4)){//om lampan är tänd
+    }else if(PINB & (1 << PB4)){//om lampan är tänd
         controllLed(&_PB4);
     }
+
+    delay(100); //väntar 100 ms för att inte överbelasta knapptrycken
 
     if(isButtonPressed() || countPresses()) { //Om 2 knappar är nedtryckta samtidigt så 
         greenFunc();
