@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+int tick = 1; //variable som håller koll på antalet knapptryckningar
 
 //struct som innehåller all information om en led
 typedef struct Led {
@@ -14,9 +15,16 @@ typedef struct Led {
   unsigned long blinkTimer; //säger när lampan började blinka
 } Led;
 
+void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för att den görna lede ska kunna overrida de röda
+  PORTB &= ~(1 << PB1); 
+  PORTB &= ~(1 << PB2);
+  PORTB &= ~(1 << PB3);
+  PORTB &= ~(1 << PB4);
+}
+
 void setup() {
     DDRB &= ~(1 << PB5); 
-    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PD0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
+    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
     
     DDRD &= ~(1 << PD7); // Sätter pin 7 som Digital input 
     DDRD &= ~(1 << PD6); // Sätter pin 6 som Digital input
@@ -26,10 +34,10 @@ void setup() {
 
 //funktion som retunrerar 1 om någon av lamporna är tända
 int anyLedsOn(){
-  if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
-    return 1;
-  }
-  return 0;
+    if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
+        return 1;
+    }
+    return 0;
 }
 
 //funktion som tänder lampan samt sätter uppdaterar relevant variabler
@@ -80,5 +88,6 @@ void loop() {
     if(PIND & (1 << PD4) || PORTB |= (1 << PB4)) { // Om knapp 4 är nedtryckt eller lampan är tänd
         controllLed(&_PB4);
     }
+    
 
 }
