@@ -52,6 +52,15 @@ int anyLedsOn(){
     return 0;
 }
 
+void greenFunc() { //Funktion som sätter på den gröna lampan enligt specifikationerna
+        turnOfRed();  //stänger av alla röda lampor
+        PORTB |= (1 << PB0); //Sätter på den gröna lampan
+        delay(3000); //Lys i 3 sekunder
+        tick = 1;
+        PORTB &= ~(1 << PB0); //Stänger av den gröna lampan  
+}
+
+
 //funktion som tänder lampan samt sätter uppdaterar relevant variabler
 void turnOnLamp(Led *led){
     PORTB |= (1 << led->pin);
@@ -88,7 +97,7 @@ void loop() {
     static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
     static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
 
-    
+
 
     if(PIND & (1 << PD7) || PORTB |= (1 << PB1)) { // Om knapp 7 är nedtryckt eller lampan är tänd
         controllLed(&_PB1); 
@@ -103,5 +112,8 @@ void loop() {
         controllLed(&_PB4);
     }
 
+    if(isButtonPressed() || ) { //Om 2 knappar är nedtryckta samtidigt så 
+        greenFunc();
+    }
 
 }
