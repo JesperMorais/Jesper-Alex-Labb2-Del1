@@ -22,6 +22,18 @@ void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för a
   PORTB &= ~(1 << PB4);
 }
 
+int isButtonPressed() { //Retunerar 1 om 2 kanppar är nedtryckta samtidigt annars 0
+    if ((PIND & (1 << PD7) && PIND & (1 << PD6)) ||
+        (PIND & (1 << PD7) && PIND & (1 << PD5)) ||
+        (PIND & (1 << PD7) && PIND & (1 << PD4)) ||
+        (PIND & (1 << PD6) && PIND & (1 << PD5)) ||
+        (PIND & (1 << PD6) && PIND & (1 << PD4)) ||
+        (PIND & (1 << PD5) && PIND & (1 << PD4))) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 void setup() {
     DDRB &= ~(1 << PB5); 
     DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
@@ -88,6 +100,6 @@ void loop() {
     if(PIND & (1 << PD4) || PORTB |= (1 << PB4)) { // Om knapp 4 är nedtryckt eller lampan är tänd
         controllLed(&_PB4);
     }
-    
+
 
 }
