@@ -15,6 +15,14 @@ typedef struct Led {
   unsigned long blinkTimer; //säger när lampan började blinka
 } Led;
 
+int countPresses() { //retunerar 1 om knapparna tryckts 10 gånger annars 0
+    if (tick == 11) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för att den görna lede ska kunna overrida de röda
     PORTB &= ~(1 << PB1); 
     PORTB &= ~(1 << PB2);
@@ -46,7 +54,7 @@ void setup() {
 
 //funktion som retunrerar 1 om någon av lamporna är tända
 int anyLedsOn(){
-    if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
+    if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4) || PINB & (1 << PB0)){
         return 1;
     }
     return 0;
@@ -127,7 +135,7 @@ void loop() {
         controllLed(&_PB4);
     }
 
-    if(isButtonPressed() || ) { //Om 2 knappar är nedtryckta samtidigt så 
+    if(isButtonPressed() || countPresses()) { //Om 2 knappar är nedtryckta samtidigt så 
         greenFunc();
     }
 
