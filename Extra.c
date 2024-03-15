@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+//struct som innehåller all information om en led
 typedef struct Led {
   uint8_t pin; //säger vilken pinne lampan är kopplad till
   unsigned int blink; //säger hur länge lampan lyser
@@ -23,7 +24,7 @@ void setup() {
     DDRD &= ~(1 << PD4); // Sätter pin 4 som Digital input  
 }
 
-
+//funktion som retunrerar 1 om någon av lamporna är tända
 int anyLedsOn(){
   if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
     return 1;
@@ -31,12 +32,14 @@ int anyLedsOn(){
   return 0;
 }
 
-void turnOnLamp(Led *led){ //tänder lampan samt sätter uppdaterar previousMillis och isOn variablerna
+//funktion som tänder lampan samt sätter uppdaterar relevant variabler
+void turnOnLamp(Led *led){
   PORTB |= (1 << led->pin);
   led->isOn = true;
   led->blinkTimer = millis();
 }
 
+//funktion som kontrollerar om lampan skall tändas eller släckas
 void controllLed(Led *led) {
     if(led->isOn){
       
@@ -60,7 +63,7 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-  static Led _PB1 = {1, 500,{1000, 2000}, 0, false, 0,0};
+  static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
   static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
   static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
   static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
