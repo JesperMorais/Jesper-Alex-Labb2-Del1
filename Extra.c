@@ -5,13 +5,13 @@
 
 //struct som innehåller all information om en led
 typedef struct Led {
-  uint8_t pin; //säger vilken pinne lampan är kopplad till
-  unsigned int blink; //säger hur länge lampan lyser
-  int offTimerArray[2]; //array av ints som säger hur länge lampan skall vara avstängs
-  uint8_t currentIndex ; //säger vilket index i offTimerArray som vi är på just nu
-  bool isOn; //säger om lampan är tänd eller släckt
-  unsigned long ledOfftimer; //säger när lampan släcktes
-  unsigned long blinkTimer; //säger när lampan började blinka
+    uint8_t pin; //säger vilken pinne lampan är kopplad till
+    unsigned int blink; //säger hur länge lampan lyser
+    int offTimerArray[2]; //array av ints som säger hur länge lampan skall vara avstängs
+    uint8_t currentIndex ; //säger vilket index i offTimerArray som vi är på just nu
+    bool isOn; //säger om lampan är tänd eller släckt
+    unsigned long ledOfftimer; //säger när lampan släcktes
+    unsigned long blinkTimer; //säger när lampan började blinka
 } Led;
 
 void setup() {
@@ -26,17 +26,17 @@ void setup() {
 
 //funktion som retunrerar 1 om någon av lamporna är tända
 int anyLedsOn(){
-  if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
-    return 1;
-  }
-  return 0;
+    if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
+        return 1;
+    }
+    return 0;
 }
 
 //funktion som tänder lampan samt sätter uppdaterar relevant variabler
 void turnOnLamp(Led *led){
-  PORTB |= (1 << led->pin);
-  led->isOn = true;
-  led->blinkTimer = millis();
+    PORTB |= (1 << led->pin);
+    led->isOn = true;
+    led->blinkTimer = millis();
 }
 
 //funktion som kontrollerar om lampan skall tändas eller släckas
@@ -63,10 +63,10 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-  static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
-  static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
-  static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
-  static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
+    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
+    static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
+    static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
+    static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
 
     if(PIND & (1 << PD7) || PINB |= (1 << PB1)) { // Om knapp 7 är nedtryckt eller lampan är tänd
         controllLed(&_PB1); 
