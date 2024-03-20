@@ -2,12 +2,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-volatile uint8_t *ddrb = (uint8_t *)0x24;
-volatile uint8_t *portb = (uint8_t *)0x25;
-volatile uint8_t *pinb = (uint8_t *)0x23;
-volatile uint8_t *ddrd = (uint8_t *)0x2A;
-volatile uint8_t *pind = (uint8_t *)0x29;
-volatile uint8_t *portb = (uint8_t *)0x2B;
+volatile uint8_t *ddrb = (uint8_t *)0x24; // pekar på DDRB som sätter vilka pinnar som är input och output
+volatile uint8_t *portb = (uint8_t *)0x25; // pekar på PORTB som sätter vilka pinnar som är höga och låga
+volatile uint8_t *pinb = (uint8_t *)0x23; // pekar på PINB som läser av vilka pinnar som är höga och låga
+volatile uint8_t *ddrd = (uint8_t *)0x2A; // pekar på DDRD som sätter vilka pinnar som är input och output
+volatile uint8_t *pind = (uint8_t *)0x29; // pekar på PIND som läser av vilka pinnar som är höga och låga
+volatile uint8_t *portb = (uint8_t *)0x2B; // pekar på PORTD som sätter vilka pinnar som är höga och låga
 
 //struct som innehåller all information om en led
 typedef struct Led {
@@ -69,10 +69,10 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
-    static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
-    static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
-    static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
+    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0}; // skapar en led struct som är kopplad till pin 1
+    static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 }; // skapar en led struct som är kopplad till pin 2
+    static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0}; // skapar en led struct som är kopplad till pin 3
+    static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0}; // skapar en led struct som är kopplad till pin 4
 
     if(*pind & (1 << PD7) || *pinb |= (1 << PB1)) { // Om knapp 7 är nedtryckt eller lampan är tänd
         controllLed(&_PB1); 
