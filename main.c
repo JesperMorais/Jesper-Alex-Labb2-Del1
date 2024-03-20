@@ -1,21 +1,25 @@
-#include <Arduino.h>
+#include <avr/io.h>
+
+volatile uint8_t *ddrb = (uint8_t *)0x24; // DDRB register address
+volatile uint8_t *portb = (uint8_t *)0x25; // PORTB register address
+
 
 byte tick = 1; // Sätter tick till 1
 byte pin = 1; // Sätter pin till 1
 
 void setup() {
-    DDRB &= ~(1 << PB5); // Sätter pin 13 som input
-    DDRB |= (1 << PB4); // Sätter pin 12 som output
-    DDRB |= (1 << PB3); // Sätter pin 11 som output
-    DDRB |= (1 << PB2); // Sätter pin 10 som output
-    DDRB |= (1 << PB1); // Sätter pin 9 som output
+    *ddrb &= ~(1 << PB5); // Sätter pin 13 som input
+    *ddrb |= (1 << PB4); // Sätter pin 12 som output
+    *ddrb |= (1 << PB3); // Sätter pin 11 som output
+    *ddrb |= (1 << PB2); // Sätter pin 10 som output
+    *ddrb |= (1 << PB1); // Sätter pin 9 som output
 }
 
 void loop() {
     
-    PORTB |= (1 << pin); // Toggle pin x (HIGH)
+    *portb |= (1 << pin); // Toggle pin x (HIGH)
     delay(100); //blink delay
-    PORTB &= ~(1 << pin); // Toggle pin x (LOW)
+    *portb &= ~(1 << pin); // Toggle pin x (LOW)
     delay(tick*1000);
 
     pin++; // Ökar pin med 1
