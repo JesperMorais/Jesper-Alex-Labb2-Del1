@@ -1,6 +1,14 @@
-#include <Arduino.h> //endast för att kunna använda Serial.print för debugging
+#include <avr/io.h> //endast för att kunna använda Serial.print för debugging
 #include <stdbool.h>
 #include <stdint.h>
+
+volatile uint8_t *ddrb = (uint8_t *)0x24; // pekar på DDRB
+volatile uint8_t *portb = (uint8_t *)0x25; // pekar på PORTB
+volatile uint8_t *pinb = (uint8_t *)0x23; // pekar på PINB
+volatile uint8_t *ddrd = (uint8_t *)0x2A; // pekar på DDRD
+volatile uint8_t *portd = (uint8_t *)0x2B; // pekar på PORTD
+volatile uint8_t *pind = (uint8_t *)0x29; // pekar på PIND
+
 int tick = 1; //variable som håller koll på antalet knapptryckningar
 
 //struct som innehåller all information om en led
@@ -23,37 +31,37 @@ int countPresses() { //retunerar 1 om knapparna tryckts 10 gånger annars 0
 }
 
 void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för att den görna lede ska kunna overrida de röda
-    PORTB &= ~(1 << PB1); 
-    PORTB &= ~(1 << PB2);
-    PORTB &= ~(1 << PB3);
-    PORTB &= ~(1 << PB4);
+    *portb &= ~(1 << PB1); 
+    *portb &= ~(1 << PB2);
+    *portb &= ~(1 << PB3);
+    *portb &= ~(1 << PB4);
 }
 
 int isButtonPressed() { //Retunerar 1 om 2 kanppar är nedtryckta samtidigt annars 0
-    if ((PIND & (1 << PD7) && PIND & (1 << PD6)) ||
-        (PIND & (1 << PD7) && PIND & (1 << PD5)) ||
-        (PIND & (1 << PD7) && PIND & (1 << PD4)) ||
-        (PIND & (1 << PD6) && PIND & (1 << PD5)) ||
-        (PIND & (1 << PD6) && PIND & (1 << PD4)) ||
-        (PIND & (1 << PD5) && PIND & (1 << PD4))) {
+    if ((*pind & (1 << PD7) && *pind & (1 << PD6)) ||
+        (*pind & (1 << PD7) && *pind & (1 << PD5)) ||
+        (*pind & (1 << PD7) && *pind & (1 << PD4)) ||
+        (*pind & (1 << PD6) && *pind & (1 << PD5)) ||
+        (*pind & (1 << PD6) && *pind & (1 << PD4)) ||
+        (*pind & (1 << PD5) && *pind & (1 << PD4))) {
         return 1;
     } else {
         return 0;
     }
 }
 void setup() {
-    DDRB &= ~(1 << PB5); 
-    DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
+    *ddrb &= ~(1 << PB5); 
+    *ddrb |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB0);  // Sätter pin 12, 11, 10, 9 och 8 som Digital output
     
-    DDRD &= ~(1 << PD7); // Sätter pin 7 som Digital input 
-    DDRD &= ~(1 << PD6); // Sätter pin 6 som Digital input
-    DDRD &= ~(1 << PD5); // Sätter pin 5 som Digital input
-    DDRD &= ~(1 << PD4); // Sätter pin 4 som Digital input  
+    *ddrd &= ~(1 << PD7); // Sätter pin 7 som Digital input 
+    *ddrd &= ~(1 << PD6); // Sätter pin 6 som Digital input
+    *ddrd &= ~(1 << PD5); // Sätter pin 5 som Digital input
+    *ddrd &= ~(1 << PD4); // Sätter pin 4 som Digital input  
 }
 
 //funktion som retunrerar 1 om någon av lamporna är tända
 int anyLedsOn(){
-    if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4) || PINB & (1 << PB0)){
+    if(*pinb & (1 << PB1) || *pinb & (1 << PB2) || *pinb & (1 << PB3) || *pinb & (1 << PB4) || *pinb & (1 << PB0)){
         return 1;
     }
     return 0;
@@ -61,16 +69,16 @@ int anyLedsOn(){
 
 void greenFunc() { //Funktion som sätter på den gröna lampan enligt specifikationerna
         turnOfRed();  //stänger av alla röda lampor
-        PORTB |= (1 << PB0); //Sätter på den gröna lampan
+        *portb |= (1 << PB0); //Sätter på den gröna lampan
         delay(3000); //Lys i 3 sekunder
         tick = 1;
-        PORTB &= ~(1 << PB0); //Stänger av den gröna lampan  
+        *portb &= ~(1 << PB0); //Stänger av den gröna lampan  
 }
 
 
 //funktion som tänder lampan samt sätter uppdaterar relevant variabler
 void turnOnLamp(Led *led){
-    PORTB |= (1 << led->pin);
+    *portb |= (1 << led->pin);
     led->isOn = true;
     led->blinkTimer = millis();
 }
@@ -80,7 +88,7 @@ void controllLed(Led *led) {
     if(led->isOn){
       
       if(millis() - led->blinkTimer >= led->blink){ //om tiden som gått sedan lampan började blinka är större än blinktiden        
-        PORTB &= ~(1 << led->pin); //stänger av leden
+        *portb &= ~(1 << led->pin); //stänger av leden
         led->isOn = false; //sätter isOn till false
         led->ledOfftimer = millis(); //sätter ledOfftimer till millis
       }
@@ -106,34 +114,34 @@ void loop() {
 
 
     //Updelningen av if satserna sker för att vi skall kontrollera tick och knapptryckningar
-    if(PIND & (1 << PD7)) { // Om knapp 7 är nedtryckt 
+    if(*pind & (1 << PD7)) { // Om knapp 7 är nedtryckt 
         tick++;
         
         controllLed(&_PB1); //kollar om lampan på pin 9 skall tändas eller släckas
 
-    }else if(PINB & (1 << PB1)){//om lampan är tänd
+    }else if(*pinb & (1 << PB1)){//om lampan är tänd
         controllLed(&_PB1);
     }
 
-    if(PIND & (1 << PD6)) { // om knapp 6 är nedtryckt
+    if(*pind & (1 << PD6)) { // om knapp 6 är nedtryckt
         tick++;
         controllLed(&_PB2); //kollar om lampan på pin 10 skall tändas eller släckas
 
-    }else if(PINB & (1 << PB2)){//om lampan är tänd
+    }else if(*pinb & (1 << PB2)){//om lampan är tänd
         controllLed(&_PB2);
     }
 
-    if(PIND & (1 << PD5)) { // Om knapp 5 är nedtryckt 
+    if(*pind & (1 << PD5)) { // Om knapp 5 är nedtryckt 
         tick++;
         controllLed(&_PB3); //kollar om lampan på pin 11 skall tändas eller släckas
-    }else if(PINB & (1 << PB3)){//om lampan är tänd
+    }else if(*pinb & (1 << PB3)){//om lampan är tänd
         controllLed(&_PB3);
     }
 
-    if(PIND & (1 << PD4)) { // Om knapp 4 är nedtryckt 
+    if(*pind & (1 << PD4)) { // Om knapp 4 är nedtryckt 
         tick++;
         controllLed(&_PB4); //kollar om lampan på pin 12 skall tändas eller släckas
-    }else if(PINB & (1 << PB4)){//om lampan är tänd
+    }else if(*pinb & (1 << PB4)){//om lampan är tänd
         controllLed(&_PB4);
     }
 
