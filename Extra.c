@@ -1,10 +1,9 @@
-#include <avr/io.h> //endast för att kunna använda Serial.print för debugging
-#include <stdbool.h>
+#include <avr/io.h> 
 #include <stdint.h>
 
-volatile uint8_t *ddrb = (uint8_t *)0x24; // pekar på DDRB
-volatile uint8_t *portb = (uint8_t *)0x25; // pekar på PORTB
-volatile uint8_t *pinb = (uint8_t *)0x23; // pekar på PINB
+volatile uint8_t *ddrb = (uint8_t *)0x24; // pekar på DDRB somn sätter vilka pinnar som är input och output
+volatile uint8_t *portb = (uint8_t *)0x25; // pekar på PORTB som sätter vilka pinnar som är höga och låga
+volatile uint8_t *pinb = (uint8_t *)0x23; // pekar på PINB som läser av vilka pinnar som är höga och låga
 volatile uint8_t *ddrd = (uint8_t *)0x2A; // pekar på DDRD
 volatile uint8_t *portd = (uint8_t *)0x2B; // pekar på PORTD
 volatile uint8_t *pind = (uint8_t *)0x29; // pekar på PIND
@@ -38,7 +37,7 @@ void turnOfAllRedLeds(){ //Funktion som släcker alla röda lampor, Detta för a
 }
 
 int isButtonPressed() { //Retunerar 1 om 2 kanppar är nedtryckta samtidigt annars 0
-    if ((*pind & (1 << PD7) && *pind & (1 << PD6)) ||
+    if ((*pind & (1 << PD7) && *pind & (1 << PD6)) || // kollar alla kombinationer av knapptryckningar
         (*pind & (1 << PD7) && *pind & (1 << PD5)) ||
         (*pind & (1 << PD7) && *pind & (1 << PD4)) ||
         (*pind & (1 << PD6) && *pind & (1 << PD5)) ||
@@ -107,7 +106,7 @@ void controllLed(Led *led) {
 }
 
 void loop() {
-    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0};
+    static Led _PB1 = {1,500,{1000, 2000}, 0, false, 0,0}; //skapar en struct för varje lampa
     static Led _PB2 = {2, 500,{1500, 3000}, 0, false,0,0 };
     static Led _PB3 = {3, 500,{6000, 2000}, 0, false,0,0};
     static Led _PB4 = {4, 500,{2000, 10000}, 0, false,0,0};
