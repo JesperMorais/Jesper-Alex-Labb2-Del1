@@ -1,4 +1,8 @@
-#include <Arduino.h>
+#include <avr/io.h>
+
+volatile uint8_t *ddrb = (uint8_t *)0x24; // DDRB register address
+volatile uint8_t *portb = (uint8_t *)0x25; // PORTB register address
+volatile uint8_t *pinb = (uint8_t *)0x23; // PINB register address
 
 typedef struct Led {
   byte pin; //säger vilken pinne lampan är kopplad till
@@ -11,20 +15,20 @@ typedef struct Led {
 } Led;
 
 void setup() {
-  DDRB &= ~(1 << PB5); 
-  DDRB |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4); 
+  *ddrb &= ~(1 << PB5); 
+  *ddrb |= (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4); 
 
 }
 
 int anyLedsOn(){
-  if(PINB & (1 << PB1) || PINB & (1 << PB2) || PINB & (1 << PB3) || PINB & (1 << PB4)){
+  if(*pinb & (1 << PB1) || *pinb & (1 << PB2) || *pinb & (1 << PB3) || *pinb & (1 << PB4)){
     return 1;
   }
   return 0;
 }
 
 void turnOnLamp(Led *led){ //tänder lampan samt sätter uppdaterar previousMillis och isOn variablerna
-  PORTB |= (1 << led->pin);
+  *portb |= (1 << led->pin);
   led->isOn = true;
   led->blinkTimer = millis();
 }
@@ -32,7 +36,7 @@ void turnOnLamp(Led *led){ //tänder lampan samt sätter uppdaterar previousMill
 void controllLed(Led *led) {
     if(led->isOn){
       if(millis() - led->blinkTimer >= led->blink){ //om tiden som gått sedan lampan började blinka är större än blinktiden
-        PORTB &= ~(1 << led->pin); //stänger av leden
+        *portb &= ~(1 << led->pin); //stänger av leden
         led->isOn = false; //sätter isOn till false
         led->ledOfftimer = millis(); //sätter ledOfftimer till millis
       }
