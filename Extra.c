@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <arduino.h> // för millis() funktionen
 
 volatile uint8_t *ddrb = (uint8_t *)0x24; // pekar på DDRB som sätter vilka pinnar som är input och output
 volatile uint8_t *portb = (uint8_t *)0x25; // pekar på PORTB som sätter vilka pinnar som är höga och låga
