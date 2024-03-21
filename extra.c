@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <arduino.h> // för att få tillgång till millis()
+#include <stdint.h> // för att få tillgång till uint8_t
 
 volatile uint8_t *ddrb = (uint8_t *)0x24; // DDRB register address
 volatile uint8_t *portb = (uint8_t *)0x25; // PORTB register address
